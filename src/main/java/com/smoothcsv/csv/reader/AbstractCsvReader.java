@@ -1,11 +1,11 @@
 /*
  * Copyright 2015 kohii
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -176,71 +176,77 @@ public abstract class AbstractCsvReader<R> implements Closeable {
     boolean skipNext = false;
     int columnCount = 0;
     char prev, c = NULL_CHARACTER, next = cb[nextChar];
-    int i;
-    charLoop: do {
-      i = nextChar;
-      for (; i < nChars; i++) {
-        prev = c;
-        c = next;
-        next = i + 1 < nChars ? cb[i + 1] : NULL_CHARACTER;
-        if (skipNext) {
-          skipNext = false;
-          continue;
-        }
-        if (c == this.escape) {
-          if (isNextCharacterEscapable(next, inQuotes || inField)) {
-            sb.append(next);
-            skipNext = true;
-          }
-        } else if (c == quote) {
-          if (isNextCharacterEscapedQuote(next, inQuotes || inField)) {
-            sb.append(next);
-            skipNext = true;
-          } else {
-
-            // the tricky case of an embedded quote in the middle: a,bc"d"ef,g
-            if (!inQuotes && !strictQuotes) {
-              if (prev != NULL_CHARACTER // not on the beginning of the line
-                  && prev != this.separator // not at the beginning of an escape sequence
-                  && (next != '\r' && next != '\n' && next != this.separator) // not at the end of
-                                                                              // an escape sequence
-              ) {
-                if (ignoreLeadingWhiteSpace && sb.length() > 0 && isAllWhiteSpace(sb)) {
-                  sb.setLength(0); // discard white space leading up to quote
-                } else {
-                  sb.append(c);
-                  // continue;
-                }
-              }
-            }
-
-            inQuotes = !inQuotes;
-          }
-          inField = !inField;
-        } else if (c == separator && !inQuotes) {
-          String s = sb.length() == 0 ? "" : sb.toString();
-          handleValue(rowData, rowIndex, columnCount++, s);
-          sb.setLength(0); // start work on next token
-          inField = false;
-        } else if (c == '\r' && !inQuotes) {
-          if (next == '\n') {
-            i++;
-            lineFeedCode = NewlineCharacter.CRLF;
-          } else {
-            lineFeedCode = NewlineCharacter.CR;
-          }
-          break charLoop; // EOL
-        } else if (c == '\n' && !inQuotes) {
-          lineFeedCode = NewlineCharacter.LF;
-          break charLoop; // EOL
+    int i = nextChar;
+    for (; i < nChars; i++) {
+      prev = c;
+      c = next;
+      if (i + 1 < nChars) {
+        next = cb[i + 1];
+      } else {
+        if (readCharactersToBuffer()) {
+          next = cb[nextChar];
+          i = nextChar - 1;
         } else {
-          if (!strictQuotes || inQuotes) {
-            sb.append(c);
-            inField = true;
-          }
+          next = NULL_CHARACTER;
         }
       }
-    } while (readCharactersToBuffer());
+      if (skipNext) {
+        skipNext = false;
+        continue;
+      }
+      if (c == this.escape) {
+        if (isNextCharacterEscapable(next, inQuotes || inField)) {
+          sb.append(next);
+          skipNext = true;
+        }
+      } else if (c == quote) {
+        if (isNextCharacterEscapedQuote(next, inQuotes || inField)) {
+          sb.append(next);
+          skipNext = true;
+        } else {
+
+          // the tricky case of an embedded quote in the middle: a,bc"d"ef,g
+          if (!inQuotes && !strictQuotes) {
+            if (prev != NULL_CHARACTER // not on the beginning of the line
+                && prev != this.separator // not at the beginning of an escape sequence
+                && (next != '\r' && next != '\n' && next != this.separator) // not at the end of
+                                                                            // an escape sequence
+            ) {
+              if (ignoreLeadingWhiteSpace && sb.length() > 0 && isAllWhiteSpace(sb)) {
+                sb.setLength(0); // discard white space leading up to quote
+              } else {
+                sb.append(c);
+                // continue;
+              }
+            }
+          }
+
+          inQuotes = !inQuotes;
+        }
+        inField = !inField;
+      } else if (c == separator && !inQuotes) {
+        String s = sb.length() == 0 ? "" : sb.toString();
+        handleValue(rowData, rowIndex, columnCount++, s);
+        sb.setLength(0); // start work on next token
+        inField = false;
+      } else if (c == '\r' && !inQuotes) {
+        if (next == '\n') {
+          i++;
+          lineFeedCode = NewlineCharacter.CRLF;
+        } else {
+          lineFeedCode = NewlineCharacter.CR;
+        }
+        break; // EOL
+      } else if (c == '\n' && !inQuotes) {
+        lineFeedCode = NewlineCharacter.LF;
+        break; // EOL
+      } else {
+        if (!strictQuotes || inQuotes) {
+          sb.append(c);
+          inField = true;
+        }
+      }
+    }
 
     nextChar = i + 1;
     if (isEmptyLine) {
@@ -358,8 +364,8 @@ public abstract class AbstractCsvReader<R> implements Closeable {
 
   /**
    * Returns a {@code Stream}, the elements of which are lines read from this {@code CsvReader}. The
-   * {@link Stream} is lazily populated, i.e., read only occurs during the <a
-   * href="../util/stream/package-summary.html#StreamOps">terminal stream operation</a>.
+   * {@link Stream} is lazily populated, i.e., read only occurs during the
+   * <a href="../util/stream/package-summary.html#StreamOps">terminal stream operation</a>.
    *
    * <p>
    * The reader must not be operated on during the execution of the terminal stream operation.
@@ -408,10 +414,9 @@ public abstract class AbstractCsvReader<R> implements Closeable {
         }
       }
     };
-    return StreamSupport
-        .stream(
-            Spliterators.spliteratorUnknownSize(iter, Spliterator.ORDERED | Spliterator.NONNULL),
-            false);
+    return StreamSupport.stream(
+        Spliterators.spliteratorUnknownSize(iter, Spliterator.ORDERED | Spliterator.NONNULL),
+        false);
   }
 
   /**
