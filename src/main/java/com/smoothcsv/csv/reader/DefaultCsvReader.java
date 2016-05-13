@@ -13,12 +13,12 @@
  */
 package com.smoothcsv.csv.reader;
 
+import com.smoothcsv.csv.CsvProperties;
+import com.smoothcsv.csv.NewlineCharacter;
+
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.smoothcsv.csv.CsvProperties;
-import com.smoothcsv.csv.NewlineCharacter;
 
 /**
  * Simple CSV Reader. This Reader reads CSV lines and parses into {@link List}.
@@ -40,7 +40,7 @@ public class DefaultCsvReader extends AbstractCsvReader<List<String>> {
   /**
    * Constructs DefaultCsvReader.
    *
-   * @param in A Reader
+   * @param in         A Reader
    * @param properties CSV Properties
    */
   public DefaultCsvReader(Reader in, CsvProperties properties) {
@@ -50,9 +50,9 @@ public class DefaultCsvReader extends AbstractCsvReader<List<String>> {
   /**
    * Constructs DefaultCsvReader.
    *
-   * @param in A Reader
+   * @param in         A Reader
    * @param properties CSV Properties
-   * @param options Options how to read the CSV
+   * @param options    Options how to read the CSV
    */
   public DefaultCsvReader(Reader in, CsvProperties properties, CsvReaderOptions options) {
     super(in, properties, options);

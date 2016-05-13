@@ -16,7 +16,6 @@ package com.smoothcsv.csv.detector;
 import com.smoothcsv.csv.CsvProperties;
 
 /**
- *
  * @author kohii
  */
 public class CsvPropertiesDetectorImpl implements CsvPropertiesDetector {
@@ -71,7 +70,7 @@ public class CsvPropertiesDetectorImpl implements CsvPropertiesDetector {
   /**
    * Detests properties of the CSV.
    *
-   * @param line CharSequence
+   * @param line      CharSequence
    * @param delimiter delimiter
    * @return a quote char
    */

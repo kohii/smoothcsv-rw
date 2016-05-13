@@ -15,6 +15,9 @@ package com.smoothcsv.csv.reader;
 
 import com.smoothcsv.csv.CsvProperties;
 import com.smoothcsv.csv.NewlineCharacter;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -22,14 +25,9 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 /**
- *
  * @author kohii
  */
 public class AbstractCsvReaderTest {
@@ -63,19 +61,19 @@ public class AbstractCsvReaderTest {
   public void testReadRow() throws Exception {
     try (AbstractCsvReader<List<String>> instance = createReader()) {
       List<String> row = instance.readRow();
-      assertArrayEquals(new String[] {"a", "b", "c"}, row.toArray());
+      assertArrayEquals(new String[]{"a", "b", "c"}, row.toArray());
       row = instance.readRow();
-      assertArrayEquals(new String[] {"aaa", "bbb", "ccc"}, row.toArray());
+      assertArrayEquals(new String[]{"aaa", "bbb", "ccc"}, row.toArray());
       row = instance.readRow();
-      assertArrayEquals(new String[] {"ddd", "eee", "fff"}, row.toArray());
+      assertArrayEquals(new String[]{"ddd", "eee", "fff"}, row.toArray());
       row = instance.readRow();
-      assertArrayEquals(new String[] {"a\na\na\n", "\nb\nb\nb\n", "\nc\n\nc\n\nc"}, row.toArray());
+      assertArrayEquals(new String[]{"a\na\na\n", "\nb\nb\nb\n", "\nc\n\nc\n\nc"}, row.toArray());
       row = instance.readRow();
-      assertArrayEquals(new String[] {"\",", "", ""}, row.toArray());
+      assertArrayEquals(new String[]{"\",", "", ""}, row.toArray());
       row = instance.readRow();
-      assertArrayEquals(new String[] {"1", "2", "3", "4"}, row.toArray());
+      assertArrayEquals(new String[]{"1", "2", "3", "4"}, row.toArray());
       row = instance.readRow();
-      assertArrayEquals(new String[] {}, row.toArray());
+      assertArrayEquals(new String[]{}, row.toArray());
       row = instance.readRow();
       assertNull(row);
     }
@@ -85,21 +83,21 @@ public class AbstractCsvReaderTest {
   public void testReadRow2() throws Exception {
     CsvProperties prop = new CsvProperties('\t', '"');
     try (AbstractCsvReader<List<String>> instance =
-        createReader(prop, CsvReaderOptions.DEFAULT, "test_0.tsv")) {
+             createReader(prop, CsvReaderOptions.DEFAULT, "test_0.tsv")) {
       List<String> row = instance.readRow();
-      assertArrayEquals(new String[] {"a", "b", "c"}, row.toArray());
+      assertArrayEquals(new String[]{"a", "b", "c"}, row.toArray());
       row = instance.readRow();
-      assertArrayEquals(new String[] {"aaa", "bbb", "ccc"}, row.toArray());
+      assertArrayEquals(new String[]{"aaa", "bbb", "ccc"}, row.toArray());
       row = instance.readRow();
-      assertArrayEquals(new String[] {"ddd", "eee", "fff"}, row.toArray());
+      assertArrayEquals(new String[]{"ddd", "eee", "fff"}, row.toArray());
       row = instance.readRow();
-      assertArrayEquals(new String[] {"a\na\na\n", "\nb\nb\nb\n", "\nc\n\nc\n\nc"}, row.toArray());
+      assertArrayEquals(new String[]{"a\na\na\n", "\nb\nb\nb\n", "\nc\n\nc\n\nc"}, row.toArray());
       row = instance.readRow();
-      assertArrayEquals(new String[] {"\",", "", ""}, row.toArray());
+      assertArrayEquals(new String[]{"\",", "", ""}, row.toArray());
       row = instance.readRow();
-      assertArrayEquals(new String[] {"1", "2", "3", "4"}, row.toArray());
+      assertArrayEquals(new String[]{"1", "2", "3", "4"}, row.toArray());
       row = instance.readRow();
-      assertArrayEquals(new String[] {}, row.toArray());
+      assertArrayEquals(new String[]{}, row.toArray());
       row = instance.readRow();
       assertNull(row);
     }
@@ -195,7 +193,7 @@ public class AbstractCsvReaderTest {
   }
 
   private static AbstractCsvReader<List<String>> createReader(CsvProperties prop,
-      CsvReaderOptions options, String file) {
+                                                              CsvReaderOptions options, String file) {
     InputStreamReader isr =
         new InputStreamReader(AbstractCsvReaderTest.class.getResourceAsStream("/" + file));
     return new AbstractCsvReaderImpl(isr, prop, options);

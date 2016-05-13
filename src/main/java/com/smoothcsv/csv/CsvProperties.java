@@ -67,7 +67,7 @@ public class CsvProperties {
    * Constructs CsvProperties.
    *
    * @param delimiter A character to separate each fields.
-   * @param quote A character to quote a field.
+   * @param quote     A character to quote a field.
    */
   public CsvProperties(char delimiter, char quote) {
     this(delimiter, quote, DEFAULT_ESCAPE);
@@ -77,8 +77,8 @@ public class CsvProperties {
    * Constructs CsvProperties.
    *
    * @param delimiter A character to separate each fields.
-   * @param quote A character to quote a field.
-   * @param escape A character to escape {@link #quote}
+   * @param quote     A character to quote a field.
+   * @param escape    A character to escape {@link #quote}
    */
   public CsvProperties(char delimiter, char quote, char escape) {
     this.delimiter = delimiter;

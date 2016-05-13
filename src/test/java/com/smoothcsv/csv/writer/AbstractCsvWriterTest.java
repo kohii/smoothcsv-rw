@@ -16,6 +16,9 @@ package com.smoothcsv.csv.writer;
 import com.smoothcsv.csv.CsvProperties;
 import com.smoothcsv.csv.CsvQuoteApplyRule;
 import com.smoothcsv.csv.NewlineCharacter;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,14 +28,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 /**
- *
  * @author kohii
  */
 public class AbstractCsvWriterTest {
@@ -136,7 +134,7 @@ public class AbstractCsvWriterTest {
     }
 
     public AbstractCsvWriterImpl(StringWriter out, CsvProperties properties,
-        CsvWriterOptions options) {
+                                 CsvWriterOptions options) {
       super(out, properties, options);
       this.out = out;
     }
@@ -168,7 +166,7 @@ public class AbstractCsvWriterTest {
   }
 
   private static AbstractCsvWriter<List<String>> createWriter(CsvProperties prop,
-      CsvWriterOptions options) {
+                                                              CsvWriterOptions options) {
     return new AbstractCsvWriterImpl(new StringWriter(), prop, options);
   }
 

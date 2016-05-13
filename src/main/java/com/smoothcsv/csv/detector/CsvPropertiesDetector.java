@@ -16,7 +16,6 @@ package com.smoothcsv.csv.detector;
 import com.smoothcsv.csv.CsvProperties;
 
 /**
- *
  * @author kohii
  */
 public interface CsvPropertiesDetector {

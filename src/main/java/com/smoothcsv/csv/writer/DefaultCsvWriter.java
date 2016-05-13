@@ -13,11 +13,11 @@
  */
 package com.smoothcsv.csv.writer;
 
-import java.io.Writer;
-import java.util.List;
-
 import com.smoothcsv.csv.CsvProperties;
 import com.smoothcsv.csv.NewlineCharacter;
+
+import java.io.Writer;
+import java.util.List;
 
 /**
  * Simple CSV Writer. This Writer writes {@link List} into the CSV.
@@ -39,7 +39,7 @@ public class DefaultCsvWriter extends AbstractCsvWriter<List<Object>> {
   /**
    * Constructs DefaultCsvWriter.
    *
-   * @param out A Writer
+   * @param out        A Writer
    * @param properties CSV Properties
    */
   public DefaultCsvWriter(Writer out, CsvProperties properties) {
@@ -49,9 +49,9 @@ public class DefaultCsvWriter extends AbstractCsvWriter<List<Object>> {
   /**
    * Constructs DefaultCsvWriter.
    *
-   * @param out A Writer
+   * @param out        A Writer
    * @param properties CSV Properties
-   * @param options Options how to write the CSV
+   * @param options    Options how to write the CSV
    */
   public DefaultCsvWriter(Writer out, CsvProperties properties, CsvWriterOptions options) {
     super(out, properties, options);

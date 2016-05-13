@@ -13,6 +13,9 @@
  */
 package com.smoothcsv.csv.reader;
 
+import com.smoothcsv.csv.CsvProperties;
+import com.smoothcsv.csv.NewlineCharacter;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Reader;
@@ -26,14 +29,11 @@ import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import com.smoothcsv.csv.CsvProperties;
-import com.smoothcsv.csv.NewlineCharacter;
-
 /**
  * Abstract CSV reader.
  *
- * @author kohii
  * @param <R> The class that holds values of one row.
+ * @author kohii
  */
 public abstract class AbstractCsvReader<R> implements Closeable {
 
@@ -102,9 +102,9 @@ public abstract class AbstractCsvReader<R> implements Closeable {
   /**
    * Constructs AbstractCsvReader.
    *
-   * @param in A Reader
+   * @param in         A Reader
    * @param properties CSV Properties
-   * @param options Options how to read the CSV
+   * @param options    Options how to read the CSV
    */
   public AbstractCsvReader(Reader in, CsvProperties properties, CsvReaderOptions options) {
 
@@ -144,10 +144,8 @@ public abstract class AbstractCsvReader<R> implements Closeable {
   /**
    * Reads values in one row.
    *
-   * @return Object containing the values of the row, or null if the end of the stream has been
-   *         reached
-   *
-   * @exception IOException If an I/O error occurs
+   * @return Object containing the values of the row, or null if the end of the stream has been reached
+   * @throws IOException If an I/O error occurs
    */
   public R readRow() throws IOException {
     ensureOpen();
@@ -209,9 +207,8 @@ public abstract class AbstractCsvReader<R> implements Closeable {
           if (!inQuotes && !strictQuotes) {
             if (prev != NULL_CHARACTER // not on the beginning of the line
                 && prev != this.separator // not at the beginning of an escape sequence
-                && (next != '\r' && next != '\n' && next != this.separator) // not at the end of
-                                                                            // an escape sequence
-            ) {
+                && (next != '\r' && next != '\n' && next != this.separator) // not at the end of an escape sequence
+                ) {
               if (ignoreLeadingWhiteSpace && sb.length() > 0 && isAllWhiteSpace(sb)) {
                 sb.setLength(0); // discard white space leading up to quote
               } else {
@@ -370,11 +367,11 @@ public abstract class AbstractCsvReader<R> implements Closeable {
    * <p>
    * The reader must not be operated on during the execution of the terminal stream operation.
    * Otherwise, the result of the terminal stream operation is undefined.
-   *
+   * </p>
    * <p>
    * After execution of the terminal stream operation there are no guarantees that the reader will
    * be at a specific position from which to read the next character or line.
-   *
+   * </p>
    * <p>
    * If an {@link IOException} is thrown when accessing the underlying {@code BufferedReader}, it is
    * wrapped in an {@link UncheckedIOException} which will be thrown from the {@code Stream} method
@@ -383,7 +380,7 @@ public abstract class AbstractCsvReader<R> implements Closeable {
    * BufferedReader after it is closed, will cause an UncheckedIOException to be thrown.
    *
    * @return a {@code Stream<List<String>>} providing the lines of text described by this
-   *         {@code BufferedReader}
+   * {@code BufferedReader}
    */
   public Stream<R> rows() {
     Iterator<R> iter = new Iterator<R>() {
@@ -438,7 +435,7 @@ public abstract class AbstractCsvReader<R> implements Closeable {
    * Handles a value.
    *
    * @param row
-   * @param rowIndex current row index
+   * @param rowIndex    current row index
    * @param columnIndex
    * @param value
    */
@@ -448,7 +445,7 @@ public abstract class AbstractCsvReader<R> implements Closeable {
    * Handles a line feed character.
    *
    * @param row
-   * @param rowIndex current row index
+   * @param rowIndex     current row index
    * @param lineFeedCode
    */
   protected void handleLineSeparator(R row, int rowIndex, NewlineCharacter lineFeedCode) {
@@ -458,7 +455,7 @@ public abstract class AbstractCsvReader<R> implements Closeable {
   /**
    * precondition: the current character is an escape
    *
-   * @param next the next character
+   * @param next     the next character
    * @param inQuotes true if the current context is quoted
    * @return true if the following character is a quote
    */
@@ -473,7 +470,7 @@ public abstract class AbstractCsvReader<R> implements Closeable {
   /**
    * precondition: the current character is a quote or an escape
    *
-   * @param next the next character
+   * @param next     the next character
    * @param inQuotes true if the current context is quoted
    * @return true if the following character is a quote
    */

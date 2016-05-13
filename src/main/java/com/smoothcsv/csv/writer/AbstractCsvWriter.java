@@ -13,6 +13,10 @@
  */
 package com.smoothcsv.csv.writer;
 
+import com.smoothcsv.csv.CsvProperties;
+import com.smoothcsv.csv.CsvQuoteApplyRule;
+import com.smoothcsv.csv.reader.CsvReaderOptions;
+
 import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.Flushable;
@@ -21,15 +25,11 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 
-import com.smoothcsv.csv.CsvProperties;
-import com.smoothcsv.csv.CsvQuoteApplyRule;
-import com.smoothcsv.csv.reader.CsvReaderOptions;
-
 /**
  * Abstract CSV writer.
  *
- * @author kohii
  * @param <R> The class that holds values of one row.
+ * @author kohii
  */
 public abstract class AbstractCsvWriter<R> implements Closeable, Flushable {
 
@@ -82,7 +82,7 @@ public abstract class AbstractCsvWriter<R> implements Closeable, Flushable {
   /**
    * Constructs AbstractCsvWriter.
    *
-   * @param out A Writer
+   * @param out        A Writer
    * @param properties CSV Properties
    */
   public AbstractCsvWriter(Writer out, CsvProperties properties) {
@@ -92,9 +92,9 @@ public abstract class AbstractCsvWriter<R> implements Closeable, Flushable {
   /**
    * Constructs AbstractCsvWriter.
    *
-   * @param out A Writer
+   * @param out        A Writer
    * @param properties CSV Properties
-   * @param options Options how to write the CSV
+   * @param options    Options how to write the CSV
    */
   public AbstractCsvWriter(Writer out, CsvProperties properties, CsvWriterOptions options) {
     this.out = (out instanceof BufferedWriter) || (out instanceof StringWriter) ? out
@@ -158,8 +158,8 @@ public abstract class AbstractCsvWriter<R> implements Closeable, Flushable {
   /**
    * Returns true if the value should be quoted.
    *
-   * @param value The value of single cell.
-   * @param rowIndex Index of the current row.
+   * @param value       The value of single cell.
+   * @param rowIndex    Index of the current row.
    * @param columnIndex Index of the current column.
    * @return if true, the value should be quoted.
    */
@@ -184,7 +184,7 @@ public abstract class AbstractCsvWriter<R> implements Closeable, Flushable {
   /**
    * Extracts the line separator of the row.
    *
-   * @param row The row object
+   * @param row      The row object
    * @param rowIndex Index of the current row.
    * @return line separator
    */
@@ -193,8 +193,8 @@ public abstract class AbstractCsvWriter<R> implements Closeable, Flushable {
   /**
    * Extracts the cell value in the row specified by the column index.
    *
-   * @param row The row object
-   * @param rowIndex Index of the current row.
+   * @param row         The row object
+   * @param rowIndex    Index of the current row.
    * @param columnIndex Column index in the row.
    * @return cell value
    */
@@ -203,7 +203,7 @@ public abstract class AbstractCsvWriter<R> implements Closeable, Flushable {
   /**
    * Extracts the column size of the row.
    *
-   * @param row The row object
+   * @param row      The row object
    * @param rowIndex Index of the current row.
    * @return column size
    */

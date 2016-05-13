@@ -17,10 +17,10 @@ import com.smoothcsv.csv.CsvProperties;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
- *
  * @author kohii
  */
 public class CsvPropertiesDetectorImplTest {
