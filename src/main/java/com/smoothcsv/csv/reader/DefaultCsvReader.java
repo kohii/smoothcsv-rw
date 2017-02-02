@@ -13,12 +13,12 @@
  */
 package com.smoothcsv.csv.reader;
 
-import com.smoothcsv.csv.CsvProperties;
-import com.smoothcsv.csv.NewlineCharacter;
-
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.smoothcsv.csv.CsvProperties;
+import com.smoothcsv.csv.NewlineCharacter;
 
 /**
  * Simple CSV Reader. This Reader reads CSV lines and parses into {@link List}.

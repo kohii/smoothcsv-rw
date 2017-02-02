@@ -13,9 +13,6 @@
  */
 package com.smoothcsv.csv.reader;
 
-import com.smoothcsv.csv.CsvProperties;
-import com.smoothcsv.csv.NewlineCharacter;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Reader;
@@ -28,6 +25,9 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import com.smoothcsv.csv.CsvProperties;
+import com.smoothcsv.csv.NewlineCharacter;
 
 /**
  * Abstract CSV reader.
@@ -363,7 +363,7 @@ public abstract class AbstractCsvReader<R> implements Closeable {
    * Returns a {@code Stream}, the elements of which are lines read from this {@code CsvReader}. The
    * {@link Stream} is lazily populated, i.e., read only occurs during the
    * <a href="../util/stream/package-summary.html#StreamOps">terminal stream operation</a>.
-   *
+   * <p>
    * <p>
    * The reader must not be operated on during the execution of the terminal stream operation.
    * Otherwise, the result of the terminal stream operation is undefined.
@@ -462,7 +462,7 @@ public abstract class AbstractCsvReader<R> implements Closeable {
   private boolean isNextCharacterEscapable(char next, boolean inQuotes) {
     return inQuotes // we are in quotes, therefore there can be escaped quotes in here.
         && next != NULL_CHARACTER // there is indeed another character to check.inQuotes // we are
-                                  // in quotes, therefore there can be escaped quotes in here.
+        // in quotes, therefore there can be escaped quotes in here.
         && next != NULL_CHARACTER // there is indeed another character to check.
         && (next == quote || next == this.escape);
   }

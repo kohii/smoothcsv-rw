@@ -13,11 +13,11 @@
  */
 package com.smoothcsv.csv.writer;
 
-import com.smoothcsv.csv.CsvProperties;
-import com.smoothcsv.csv.NewlineCharacter;
-
 import java.io.Writer;
 import java.util.List;
+
+import com.smoothcsv.csv.CsvProperties;
+import com.smoothcsv.csv.NewlineCharacter;
 
 /**
  * Simple CSV Writer. This Writer writes {@link List} into the CSV.

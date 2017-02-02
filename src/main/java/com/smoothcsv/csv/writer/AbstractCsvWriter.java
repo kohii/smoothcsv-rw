@@ -13,10 +13,6 @@
  */
 package com.smoothcsv.csv.writer;
 
-import com.smoothcsv.csv.CsvProperties;
-import com.smoothcsv.csv.CsvQuoteApplyRule;
-import com.smoothcsv.csv.reader.CsvReaderOptions;
-
 import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.Flushable;
@@ -24,6 +20,10 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
+
+import com.smoothcsv.csv.CsvProperties;
+import com.smoothcsv.csv.CsvQuoteApplyRule;
+import com.smoothcsv.csv.reader.CsvReaderOptions;
 
 /**
  * Abstract CSV writer.

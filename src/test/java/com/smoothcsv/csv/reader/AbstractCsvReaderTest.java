@@ -13,11 +13,9 @@
  */
 package com.smoothcsv.csv.reader;
 
-import com.smoothcsv.csv.CsvProperties;
-import com.smoothcsv.csv.NewlineCharacter;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -25,7 +23,11 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import com.smoothcsv.csv.CsvProperties;
+import com.smoothcsv.csv.NewlineCharacter;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author kohii
