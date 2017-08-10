@@ -26,8 +26,10 @@ import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import com.smoothcsv.csv.CsvProperties;
-import com.smoothcsv.csv.NewlineCharacter;
+import com.smoothcsv.csv.prop.CsvProperties;
+import com.smoothcsv.csv.prop.LineSeparator;
+import com.smoothcsv.csv.prop.QuoteEscapeRule;
+import com.smoothcsv.csv.prop.QuoteEscapeStrategy;
 
 /**
  * Abstract CSV reader.
@@ -106,11 +108,14 @@ public abstract class AbstractCsvReader<R> implements Closeable {
    * @param properties CSV Properties
    * @param options    Options how to read the CSV
    */
-  public AbstractCsvReader(Reader in, CsvProperties properties, CsvReaderOptions options) {
+  public AbstractCsvReader(Reader in, CsvProperties properties, CsvReadOption options) {
 
     this.separator = properties.getDelimiter();
-    this.quote = properties.getQuote();
-    this.escape = properties.getEscape();
+    this.quote = properties.getQuoteChar();
+    QuoteEscapeRule quoteEscapeRule = properties.getQuoteEscapeRule();
+    this.escape = quoteEscapeRule.getStrategy() == QuoteEscapeStrategy.REPEAT_QUOTE_CHAR
+        ? NULL_CHARACTER
+        : quoteEscapeRule.getEscapeChar();
 
     this.strictQuotes = options.isStrictQuotes();
     this.ignoreLeadingWhiteSpace = options.isIgnoreLeadingWhiteSpace();
@@ -168,7 +173,7 @@ public abstract class AbstractCsvReader<R> implements Closeable {
     StringBuilder sb = new StringBuilder(128);
     boolean isEmptyLine = cb[nextChar] == '\n' || cb[nextChar] == '\r';
     R rowData = createNewRow(rowIndex);
-    NewlineCharacter lineFeedCode = null;
+    LineSeparator lineSeparator = null;
     boolean inQuotes = false;
     boolean inField = false;
     boolean skipNext = false;
@@ -229,13 +234,13 @@ public abstract class AbstractCsvReader<R> implements Closeable {
       } else if (c == '\r' && !inQuotes) {
         if (next == '\n') {
           i++;
-          lineFeedCode = NewlineCharacter.CRLF;
+          lineSeparator = LineSeparator.CRLF;
         } else {
-          lineFeedCode = NewlineCharacter.CR;
+          lineSeparator = LineSeparator.CR;
         }
         break; // EOL
       } else if (c == '\n' && !inQuotes) {
-        lineFeedCode = NewlineCharacter.LF;
+        lineSeparator = LineSeparator.LF;
         break; // EOL
       } else {
         if (!strictQuotes || inQuotes) {
@@ -257,7 +262,7 @@ public abstract class AbstractCsvReader<R> implements Closeable {
       handleValue(rowData, rowIndex, columnCount++, s);
     }
 
-    handleLineSeparator(rowData, rowIndex, lineFeedCode);
+    handleLineSeparator(rowData, rowIndex, lineSeparator);
 
     minColumnCount = minColumnCount == -1 ? columnCount : Math.min(minColumnCount, columnCount);
     maxColumnCount = maxColumnCount == -1 ? columnCount : Math.max(maxColumnCount, columnCount);
@@ -448,7 +453,7 @@ public abstract class AbstractCsvReader<R> implements Closeable {
    * @param rowIndex     current row index
    * @param lineFeedCode
    */
-  protected void handleLineSeparator(R row, int rowIndex, NewlineCharacter lineFeedCode) {
+  protected void handleLineSeparator(R row, int rowIndex, LineSeparator lineFeedCode) {
     // do nothing
   }
 

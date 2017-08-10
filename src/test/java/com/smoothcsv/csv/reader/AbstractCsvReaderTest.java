@@ -23,8 +23,9 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.smoothcsv.csv.CsvProperties;
-import com.smoothcsv.csv.NewlineCharacter;
+import com.smoothcsv.csv.prop.CsvProperties;
+import com.smoothcsv.csv.prop.LineSeparator;
+import com.smoothcsv.csv.prop.QuoteEscapeRule;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -83,9 +84,9 @@ public class AbstractCsvReaderTest {
 
   @Test
   public void testReadRow2() throws Exception {
-    CsvProperties prop = new CsvProperties('\t', '"');
+    CsvProperties prop = CsvProperties.of('\t', '"', QuoteEscapeRule.repeatQuoteChar());
     try (AbstractCsvReader<List<String>> instance =
-             createReader(prop, CsvReaderOptions.DEFAULT, "test_0.tsv")) {
+             createReader(prop, CsvReadOption.DEFAULT, "test_0.tsv")) {
       List<String> row = instance.readRow();
       assertArrayEquals(new String[]{"a", "b", "c"}, row.toArray());
       row = instance.readRow();
@@ -163,10 +164,10 @@ public class AbstractCsvReaderTest {
   public static class AbstractCsvReaderImpl extends AbstractCsvReader<List<String>> {
 
     public AbstractCsvReaderImpl(Reader in) {
-      super(in, CsvProperties.DEFAULT, CsvReaderOptions.DEFAULT);
+      super(in, CsvProperties.DEFAULT, CsvReadOption.DEFAULT);
     }
 
-    public AbstractCsvReaderImpl(Reader in, CsvProperties prop, CsvReaderOptions options) {
+    public AbstractCsvReaderImpl(Reader in, CsvProperties prop, CsvReadOption options) {
       super(in, prop, options);
     }
 
@@ -178,7 +179,7 @@ public class AbstractCsvReaderTest {
       row.add(value);
     }
 
-    public void handleLineSeparator(List<String> row, int rowIndex, NewlineCharacter lineFeedCode) {
+    public void handleLineSeparator(List<String> row, int rowIndex, LineSeparator lineFeedCode) {
       // do nothing
     }
 
@@ -195,7 +196,7 @@ public class AbstractCsvReaderTest {
   }
 
   private static AbstractCsvReader<List<String>> createReader(CsvProperties prop,
-                                                              CsvReaderOptions options, String file) {
+                                                              CsvReadOption options, String file) {
     InputStreamReader isr =
         new InputStreamReader(AbstractCsvReaderTest.class.getResourceAsStream("/" + file));
     return new AbstractCsvReaderImpl(isr, prop, options);

@@ -15,7 +15,8 @@ package com.smoothcsv.csv.detector;
 
 import static org.junit.Assert.assertEquals;
 
-import com.smoothcsv.csv.CsvProperties;
+import com.smoothcsv.csv.prop.CsvProperties;
+import com.smoothcsv.csv.prop.QuoteEscapeRule;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,9 +42,9 @@ public class CsvPropertiesDetectorImplTest {
     CharSequence line = "\"aaa\",\"bbb\",\"ccc\"";
     CsvPropertiesDetectorImpl instance = new CsvPropertiesDetectorImpl();
     CsvProperties result = instance.detectProperties(line);
-    assertEquals('"', result.getQuote());
+    assertEquals('"', result.getQuoteChar());
     assertEquals(',', result.getDelimiter());
-    assertEquals('\0', result.getEscape());
+    assertEquals(QuoteEscapeRule.repeatQuoteChar(), result.getQuoteEscapeRule());
   }
 
   /**
@@ -54,9 +55,9 @@ public class CsvPropertiesDetectorImplTest {
     CharSequence line = "\"aaa\",bbb,ccc";
     CsvPropertiesDetectorImpl instance = new CsvPropertiesDetectorImpl();
     CsvProperties result = instance.detectProperties(line);
-    assertEquals('"', result.getQuote());
+    assertEquals('"', result.getQuoteChar());
     assertEquals(',', result.getDelimiter());
-    assertEquals('\0', result.getEscape());
+    assertEquals(QuoteEscapeRule.repeatQuoteChar(), result.getQuoteEscapeRule());
   }
 
   /**
@@ -67,9 +68,9 @@ public class CsvPropertiesDetectorImplTest {
     CharSequence line = "\"aaa\",\"bb\\\"b\",\"ccc\"";
     CsvPropertiesDetectorImpl instance = new CsvPropertiesDetectorImpl();
     CsvProperties result = instance.detectProperties(line);
-    assertEquals('"', result.getQuote());
+    assertEquals('"', result.getQuoteChar());
     assertEquals(',', result.getDelimiter());
-    assertEquals('\\', result.getEscape());
+    assertEquals(QuoteEscapeRule.escapeWith('\\'), result.getQuoteEscapeRule());
   }
 
   /**
@@ -80,8 +81,8 @@ public class CsvPropertiesDetectorImplTest {
     CharSequence line = "'aaa'\t'bbb'\t'ccc'";
     CsvPropertiesDetectorImpl instance = new CsvPropertiesDetectorImpl();
     CsvProperties result = instance.detectProperties(line);
-    assertEquals('\'', result.getQuote());
+    assertEquals('\'', result.getQuoteChar());
     assertEquals('\t', result.getDelimiter());
-    assertEquals('\0', result.getEscape());
+    assertEquals(QuoteEscapeRule.repeatQuoteChar(), result.getQuoteEscapeRule());
   }
 }

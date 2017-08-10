@@ -11,21 +11,20 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.smoothcsv.csv.detector;
-
-import com.smoothcsv.csv.prop.CsvProperties;
+package com.smoothcsv.csv.prop;
 
 /**
+ * Defines the strategy to escape quote characters inside cell values
+ *
  * @author kohii
  */
-public interface CsvPropertiesDetector {
-
+public enum QuoteEscapeStrategy {
   /**
-   * Detests properties of the CSV.
-   *
-   * @param cs CharSequence
-   * @return {@link CsvProperties}, or null if could not detect.
+   * Repeat the quote character to represent single quote character
    */
-  CsvProperties detectProperties(CharSequence cs);
-
+  REPEAT_QUOTE_CHAR,
+  /**
+   * Use a special character to escape quote characters
+   */
+  USE_ESCAPE_CHAR
 }

@@ -13,7 +13,8 @@
  */
 package com.smoothcsv.csv.detector;
 
-import com.smoothcsv.csv.CsvProperties;
+import com.smoothcsv.csv.prop.CsvProperties;
+import com.smoothcsv.csv.prop.QuoteEscapeRule;
 
 /**
  * @author kohii
@@ -49,7 +50,7 @@ public class CsvPropertiesDetectorImpl implements CsvPropertiesDetector {
    * @param line CharSequence
    * @return a delimiter char, or '\0' if could not detect
    */
-  protected char detectDelimiter(CharSequence line) {
+  private char detectDelimiter(CharSequence line) {
     int tabCount = 0, commaCount = 0;
     for (int i = 0; i < line.length(); i++) {
       char c = line.charAt(i);
@@ -81,9 +82,7 @@ public class CsvPropertiesDetectorImpl implements CsvPropertiesDetector {
       i++;
     }
 
-    char escape = NULL_CHARACTER;
-    char quote = '"';
-    // CsvQuoteApplyRule quoteApplyRule = CsvQuoteApplyRule.QUOTES_ALL;
+    QuoteEscapeRule escapeRule = QuoteEscapeRule.repeatQuoteChar();
 
     @SuppressWarnings("unused")
     int fieldCount = 0;
@@ -126,7 +125,7 @@ public class CsvPropertiesDetectorImpl implements CsvPropertiesDetector {
       } else if (c == '"' || c == '\'') {
         if (fieldStartingChar == c) {
           if (prev == '\\') {
-            escape = '\\';
+            escapeRule = QuoteEscapeRule.escapeWith('\\');
           } else if (next == c) {
             // escaped.
             i++;
@@ -136,17 +135,25 @@ public class CsvPropertiesDetectorImpl implements CsvPropertiesDetector {
     }
 
     if (doubleQuoteCount > 0) {
-      quote = '"';
+      return CsvProperties.of(
+          delimiter,
+          '"',
+          escapeRule
+      );
     } else if (singleQuoteCount > 0) {
-      quote = '\'';
+      return CsvProperties.of(
+          delimiter,
+          '\'',
+          escapeRule
+      );
     } else if (noQuoteCount > 0) {
-      quote = NULL_CHARACTER;
+      return CsvProperties.of(delimiter);
     }
 
-    CsvProperties properties = new CsvProperties();
-    properties.setDelimiter(delimiter);
-    properties.setQuote(quote);
-    properties.setEscape(escape);
-    return properties;
+    return CsvProperties.of(
+        delimiter,
+        '"',
+        escapeRule
+    );
   }
 }

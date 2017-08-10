@@ -11,21 +11,28 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.smoothcsv.csv.detector;
+package com.smoothcsv.csv.writer;
 
-import com.smoothcsv.csv.prop.CsvProperties;
+import com.smoothcsv.csv.prop.QuoteApplyRule;
+import lombok.NonNull;
+import lombok.Value;
 
 /**
+ * Configurations for <code>CsvReader</code>
+ *
  * @author kohii
  */
-public interface CsvPropertiesDetector {
+@Value(staticConstructor = "of")
+public class CsvWriteOption {
 
   /**
-   * Detests properties of the CSV.
-   *
-   * @param cs CharSequence
-   * @return {@link CsvProperties}, or null if could not detect.
+   * Default instance of {@link CsvWriteOption}.
    */
-  CsvProperties detectProperties(CharSequence cs);
+  public static final CsvWriteOption DEFAULT = new CsvWriteOption(QuoteApplyRule.QUOTES_ALL);
 
+  /**
+   * {@link QuoteApplyRule}
+   */
+  @NonNull
+  private final QuoteApplyRule quoteOption;
 }
