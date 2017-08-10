@@ -11,14 +11,17 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.smoothcsv.csv;
+package com.smoothcsv.csv.prop;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * Line feed code.
  *
  * @author kohii
  */
-public enum NewlineCharacter {
+@RequiredArgsConstructor
+public enum LineSeparator {
 
   /**
    * line feeds (CR).
@@ -34,15 +37,11 @@ public enum NewlineCharacter {
   CRLF("\r\n");
 
   /**
-   * Default stringValue of {@link NewlineCharacter}.
+   * Default stringValue of {@link LineSeparator}.
    */
-  public static final NewlineCharacter DEFAULT = of(System.getProperty("line.separator"));
+  public static final LineSeparator DEFAULT = of(System.getProperty("line.separator"));
 
   private final String stringValue;
-
-  private NewlineCharacter(String value) {
-    this.stringValue = value;
-  }
 
   @Override
   public String toString() {
@@ -59,7 +58,7 @@ public enum NewlineCharacter {
   }
 
   /**
-   * Returns the stringValue represented by this {@link NewlineCharacter}.
+   * Returns the stringValue represented by this {@link LineSeparator}.
    *
    * @return a value
    */
@@ -69,12 +68,12 @@ public enum NewlineCharacter {
   }
 
   /**
-   * Returns the {@link NewlineCharacter} constant of the specified line separator string.
+   * Returns the {@link LineSeparator} constant of the specified line separator string.
    *
    * @param lineSeparator line separator
-   * @return {@link NewlineCharacter}
+   * @return {@link LineSeparator}
    */
-  public static NewlineCharacter of(String lineSeparator) {
+  public static LineSeparator of(String lineSeparator) {
     switch (lineSeparator) {
       case "\r\n":
         return CRLF;

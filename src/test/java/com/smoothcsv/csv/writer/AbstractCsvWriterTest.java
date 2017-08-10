@@ -23,11 +23,12 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import com.smoothcsv.csv.CsvProperties;
-import com.smoothcsv.csv.CsvQuoteApplyRule;
-import com.smoothcsv.csv.NewlineCharacter;
+import com.smoothcsv.csv.prop.CsvProperties;
+import com.smoothcsv.csv.prop.LineSeparator;
+import com.smoothcsv.csv.prop.QuoteApplyRule;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,7 +58,7 @@ public class AbstractCsvWriterTest {
     instance.writeRow(Arrays.asList("a\na\na\n", "\nb\nb\nb\n", "\nc\n\nc\n\nc"));
     instance.writeRow(Arrays.asList("\",", "", ""));
     instance.writeRow(Arrays.asList("1", "2", "3", "4"));
-    instance.writeRow(Arrays.asList());
+    instance.writeRow(Collections.emptyList());
     String csv = getResultString(instance);
     assertEquals(readFile("test_0.csv"), csv);
   }
@@ -75,7 +76,7 @@ public class AbstractCsvWriterTest {
     lines.add(Arrays.asList("a\na\na\n", "\nb\nb\nb\n", "\nc\n\nc\n\nc"));
     lines.add(Arrays.asList("\",", "", ""));
     lines.add(Arrays.asList("1", "2", "3", "4"));
-    lines.add(Arrays.asList());
+    lines.add(Collections.emptyList());
     instance.writeAll(lines);
     String csv = getResultString(instance);
     assertEquals(readFile("test_0.csv"), csv);
@@ -86,8 +87,7 @@ public class AbstractCsvWriterTest {
    */
   @Test
   public void testAppliesQuoting_quoteWhenNeeded() {
-    CsvWriterOptions options = new CsvWriterOptions();
-    options.setQuoteOption(CsvQuoteApplyRule.QUOTES_IF_NECESSARY);
+    CsvWriteOption options = CsvWriteOption.of(QuoteApplyRule.QUOTES_IF_NECESSARY);
     AbstractCsvWriter<List<String>> instance = createWriter(CsvProperties.DEFAULT, options);
     assertFalse(instance.appliesQuoting("abc", 0, 0));
     assertTrue(instance.appliesQuoting("a\"bc", 0, 0));
@@ -101,8 +101,7 @@ public class AbstractCsvWriterTest {
    */
   @Test
   public void testAppliesQuoting_noQuote() {
-    CsvWriterOptions options = new CsvWriterOptions();
-    options.setQuoteOption(CsvQuoteApplyRule.NO_QUOTE);
+    CsvWriteOption options = CsvWriteOption.of(QuoteApplyRule.NO_QUOTE);
     AbstractCsvWriter<List<String>> instance = createWriter(CsvProperties.DEFAULT, options);
     assertFalse(instance.appliesQuoting("abc", 0, 0));
     assertFalse(instance.appliesQuoting("a\"bc", 0, 0));
@@ -116,8 +115,7 @@ public class AbstractCsvWriterTest {
    */
   @Test
   public void testAppliesQuoting_quoteAll() {
-    CsvWriterOptions options = new CsvWriterOptions();
-    options.setQuoteOption(CsvQuoteApplyRule.QUOTES_ALL);
+    CsvWriteOption options = CsvWriteOption.of(QuoteApplyRule.QUOTES_ALL);
     AbstractCsvWriter<List<String>> instance = createWriter(CsvProperties.DEFAULT, options);
     assertTrue(instance.appliesQuoting("abc", 0, 0));
     assertTrue(instance.appliesQuoting("a\"bc", 0, 0));
@@ -136,13 +134,13 @@ public class AbstractCsvWriterTest {
     }
 
     public AbstractCsvWriterImpl(StringWriter out, CsvProperties properties,
-                                 CsvWriterOptions options) {
+                                 CsvWriteOption options) {
       super(out, properties, options);
       this.out = out;
     }
 
     public Object extractLineSeparator(List<String> row, int rowIndex) {
-      return NewlineCharacter.DEFAULT.stringValue();
+      return LineSeparator.DEFAULT.stringValue();
     }
 
     public String extractValue(List<String> row, int rowIndex, int columnIndex) {
@@ -168,7 +166,7 @@ public class AbstractCsvWriterTest {
   }
 
   private static AbstractCsvWriter<List<String>> createWriter(CsvProperties prop,
-                                                              CsvWriterOptions options) {
+                                                              CsvWriteOption options) {
     return new AbstractCsvWriterImpl(new StringWriter(), prop, options);
   }
 

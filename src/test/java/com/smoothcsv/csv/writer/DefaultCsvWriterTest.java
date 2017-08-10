@@ -20,7 +20,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
 
-import com.smoothcsv.csv.NewlineCharacter;
+import com.smoothcsv.csv.prop.LineSeparator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +53,7 @@ public class DefaultCsvWriterTest {
   public void testExtractLineFeedCode() {
     List<Object> row = Arrays.asList("1", "2", "3");
     Object result = csvWriter.extractLineSeparator(row, 0);
-    assertEquals(NewlineCharacter.DEFAULT.stringValue(), result);
+    assertEquals(LineSeparator.DEFAULT.stringValue(), result);
   }
 
   /**

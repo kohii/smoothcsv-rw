@@ -21,9 +21,10 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 
-import com.smoothcsv.csv.CsvProperties;
-import com.smoothcsv.csv.CsvQuoteApplyRule;
-import com.smoothcsv.csv.reader.CsvReaderOptions;
+import com.smoothcsv.csv.prop.CsvProperties;
+import com.smoothcsv.csv.prop.QuoteApplyRule;
+import com.smoothcsv.csv.prop.QuoteEscapeRule;
+import com.smoothcsv.csv.prop.QuoteEscapeStrategy;
 
 /**
  * Abstract CSV writer.
@@ -57,7 +58,7 @@ public abstract class AbstractCsvWriter<R> implements Closeable, Flushable {
   /**
    * Rules how to apply quote to a value.
    */
-  protected final CsvQuoteApplyRule quoteRule;
+  protected final QuoteApplyRule quoteRule;
 
   /**
    * A writer.
@@ -71,7 +72,7 @@ public abstract class AbstractCsvWriter<R> implements Closeable, Flushable {
 
   /**
    * Constructs AbstractCsvWriter using {@link CsvProperties#DEFAULT} and
-   * {@link CsvReaderOptions#DEFAULT}.
+   * {@link CsvWriteOption#DEFAULT}.
    *
    * @param out A Writer
    */
@@ -86,7 +87,7 @@ public abstract class AbstractCsvWriter<R> implements Closeable, Flushable {
    * @param properties CSV Properties
    */
   public AbstractCsvWriter(Writer out, CsvProperties properties) {
-    this(out, properties, CsvWriterOptions.DEFAULT);
+    this(out, properties, CsvWriteOption.DEFAULT);
   }
 
   /**
@@ -96,16 +97,19 @@ public abstract class AbstractCsvWriter<R> implements Closeable, Flushable {
    * @param properties CSV Properties
    * @param options    Options how to write the CSV
    */
-  public AbstractCsvWriter(Writer out, CsvProperties properties, CsvWriterOptions options) {
+  public AbstractCsvWriter(Writer out, CsvProperties properties, CsvWriteOption options) {
     this.out = (out instanceof BufferedWriter) || (out instanceof StringWriter) ? out
         : new BufferedWriter(out);
 
     this.separator = properties.getDelimiter();
-    this.quote = properties.getQuote();
-    this.escape = properties.getEscape();
+    this.quote = properties.getQuoteChar();
+    QuoteEscapeRule quoteEscapeRule = properties.getQuoteEscapeRule();
+    this.escape = quoteEscapeRule.getStrategy() == QuoteEscapeStrategy.REPEAT_QUOTE_CHAR
+        ? NULL_CHARACTER
+        : quoteEscapeRule.getEscapeChar();
 
     if (quote == NULL_CHARACTER) {
-      this.quoteRule = CsvQuoteApplyRule.NO_QUOTE;
+      this.quoteRule = QuoteApplyRule.NO_QUOTE;
     } else {
       this.quoteRule = options.getQuoteOption();
     }

@@ -16,8 +16,8 @@ package com.smoothcsv.csv.writer;
 import java.io.Writer;
 import java.util.List;
 
-import com.smoothcsv.csv.CsvProperties;
-import com.smoothcsv.csv.NewlineCharacter;
+import com.smoothcsv.csv.prop.CsvProperties;
+import com.smoothcsv.csv.prop.LineSeparator;
 
 /**
  * Simple CSV Writer. This Writer writes {@link List} into the CSV.
@@ -28,12 +28,12 @@ public class DefaultCsvWriter extends AbstractCsvWriter<List<Object>> {
 
   /**
    * Constructs DefaultCsvWriter using {@link CsvProperties#DEFAULT} and
-   * {@link CsvWriterOptions#DEFAULT}.
+   * {@link CsvWriteOption#DEFAULT}.
    *
    * @param out A Writer
    */
   public DefaultCsvWriter(Writer out) {
-    super(out, CsvProperties.DEFAULT, CsvWriterOptions.DEFAULT);
+    super(out, CsvProperties.DEFAULT, CsvWriteOption.DEFAULT);
   }
 
   /**
@@ -43,7 +43,7 @@ public class DefaultCsvWriter extends AbstractCsvWriter<List<Object>> {
    * @param properties CSV Properties
    */
   public DefaultCsvWriter(Writer out, CsvProperties properties) {
-    super(out, properties, CsvWriterOptions.DEFAULT);
+    super(out, properties, CsvWriteOption.DEFAULT);
   }
 
   /**
@@ -53,13 +53,13 @@ public class DefaultCsvWriter extends AbstractCsvWriter<List<Object>> {
    * @param properties CSV Properties
    * @param options    Options how to write the CSV
    */
-  public DefaultCsvWriter(Writer out, CsvProperties properties, CsvWriterOptions options) {
+  public DefaultCsvWriter(Writer out, CsvProperties properties, CsvWriteOption options) {
     super(out, properties, options);
   }
 
   @Override
   protected Object extractLineSeparator(List<Object> row, int rowIndex) {
-    return NewlineCharacter.DEFAULT.stringValue();
+    return LineSeparator.DEFAULT.stringValue();
   }
 
   @Override

@@ -17,8 +17,8 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.smoothcsv.csv.CsvProperties;
-import com.smoothcsv.csv.NewlineCharacter;
+import com.smoothcsv.csv.prop.CsvProperties;
+import com.smoothcsv.csv.prop.LineSeparator;
 
 /**
  * Simple CSV Reader. This Reader reads CSV lines and parses into {@link List}.
@@ -29,12 +29,12 @@ public class DefaultCsvReader extends AbstractCsvReader<List<String>> {
 
   /**
    * Constructs DefaultCsvReader using {@link CsvProperties#DEFAULT} and
-   * {@link CsvReaderOptions#DEFAULT}.
+   * {@link CsvReadOption#DEFAULT}.
    *
    * @param in A Reader
    */
   public DefaultCsvReader(Reader in) {
-    super(in, CsvProperties.DEFAULT, CsvReaderOptions.DEFAULT);
+    super(in, CsvProperties.DEFAULT, CsvReadOption.DEFAULT);
   }
 
   /**
@@ -44,7 +44,7 @@ public class DefaultCsvReader extends AbstractCsvReader<List<String>> {
    * @param properties CSV Properties
    */
   public DefaultCsvReader(Reader in, CsvProperties properties) {
-    super(in, properties, CsvReaderOptions.DEFAULT);
+    super(in, properties, CsvReadOption.DEFAULT);
   }
 
   /**
@@ -54,7 +54,7 @@ public class DefaultCsvReader extends AbstractCsvReader<List<String>> {
    * @param properties CSV Properties
    * @param options    Options how to read the CSV
    */
-  public DefaultCsvReader(Reader in, CsvProperties properties, CsvReaderOptions options) {
+  public DefaultCsvReader(Reader in, CsvProperties properties, CsvReadOption options) {
     super(in, properties, options);
   }
 
@@ -69,7 +69,7 @@ public class DefaultCsvReader extends AbstractCsvReader<List<String>> {
   }
 
   @Override
-  protected void handleLineSeparator(List<String> row, int rowIndex, NewlineCharacter lineFeedCode) {
+  protected void handleLineSeparator(List<String> row, int rowIndex, LineSeparator lineFeedCode) {
     // do nothing
   }
 }

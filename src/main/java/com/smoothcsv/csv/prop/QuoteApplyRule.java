@@ -11,14 +11,14 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.smoothcsv.csv;
+package com.smoothcsv.csv.prop;
 
 /**
- * Identifies how to apply quote to a value.
+ * Indicates how to apply quote character to each cell value.
  *
  * @author kohii
  */
-public enum CsvQuoteApplyRule {
+public enum QuoteApplyRule {
 
   /**
    * Suppresses all quoting.
@@ -30,7 +30,7 @@ public enum CsvQuoteApplyRule {
   QUOTES_ALL,
   /**
    * Quotes only when the value contains {@link CsvProperties#delimiter},
-   * {@link CsvProperties#quote}, or {@link CsvProperties#escape}.
+   * {@link CsvProperties#quoteChar}, or {@link QuoteEscapeRule#escapeChar}.
    */
   QUOTES_IF_NECESSARY
 }
