@@ -140,7 +140,7 @@ public class AbstractCsvWriterTest {
     }
 
     public Object extractLineSeparator(List<String> row, int rowIndex) {
-      return LineSeparator.DEFAULT.stringValue();
+      return LineSeparator.LF.stringValue();
     }
 
     public String extractValue(List<String> row, int rowIndex, int columnIndex) {
