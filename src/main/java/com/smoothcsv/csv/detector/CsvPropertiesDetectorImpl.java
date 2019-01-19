@@ -102,7 +102,7 @@ public class CsvPropertiesDetectorImpl implements CsvPropertiesDetector {
         continue;
       }
 
-      if (c == delimiter) {
+      if (c == delimiter || c == '\r' || c == '\n') {
         if (fieldStartingChar == NULL_CHARACTER) {
           fieldCount++;
           noQuoteCount++;
