@@ -1,0 +1,26 @@
+apply plugin: 'java'
+apply plugin: 'java-library'
+apply plugin: 'maven'
+apply plugin: 'idea'
+
+group = 'com.smoothcsv.csv'
+version = '1.1'
+
+description = "smoothcsv-rw"
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+tasks.withType(JavaCompile) {
+  options.encoding = 'UTF-8'
+}
+
+repositories {
+  jcenter()
+}
+
+dependencies {
+  compileOnly 'org.projectlombok:lombok:1.18.2'
+  annotationProcessor 'org.projectlombok:lombok:1.18.2'
+  testImplementation 'junit:junit:4.10'
+}
