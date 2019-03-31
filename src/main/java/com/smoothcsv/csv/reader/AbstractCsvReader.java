@@ -213,12 +213,12 @@ public abstract class AbstractCsvReader<R> implements Closeable {
             if (prev != NULL_CHARACTER // not on the beginning of the line
                 && prev != this.separator // not at the beginning of an escape sequence
                 && (next != '\r' && next != '\n' && next != this.separator) // not at the end of an escape sequence
-                ) {
+            ) {
               if (ignoreLeadingWhiteSpace && sb.length() > 0 && isAllWhiteSpace(sb)) {
                 sb.setLength(0); // discard white space leading up to quote
               } else {
                 sb.append(c);
-                // continue;
+                continue;
               }
             }
           }
